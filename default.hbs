@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{@site.locale}}"{{#match @custom.color_scheme "Dark"}} class="dark-mode"{{else match @custom.color_scheme "Auto"}} class="auto-color"{{/match}}>
+<html lang="{{@site.locale}}"{{#match @custom.color_scheme "Dark"}} class="dark-mode"{{else match @custom.color_scheme "Auto"}} class="light-mode"{{/match}}>
 <head>
 
     {{!-- Basic meta - advanced meta is output with {ghost_head} below --}}
@@ -32,6 +32,7 @@
                     {{/if}}
                 </a>
                 <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search>{{> "icons/search"}}</button>
+                <button type="button" name="toggle-dark-mode" onclick="darkmodeToggled()" title="Toggle dark/light mode">🌛</button>
                 <button class="gh-burger"></button>
             </div>
 
@@ -96,7 +97,23 @@
 </script>
 <script src="{{asset "built/casper.js"}}"></script>
 <script>
-$(document).ready(function () {
+    $(document).ready(function () {
+
+    darkmodeToggled = function() {
+        darkmodeChanged(!window.darkThrottled);
+    }
+
+    function darkmodeChanged(state) {
+        window.darkThrottled = state;
+        localStorage.setItem('darkmode-enabled', state);
+        console.log(window.darkThrottled);
+        $('html').toggleClass("dark-mode light-mode", 1000);
+        document.body.classList[state ? 'add' : 'remove']('dark');
+    }
+
+    if (localStorage.getItem('darkmode-enabled') === "true") {
+        darkmodeChanged(true);
+    }
     // Mobile Menu Trigger
     $('.gh-burger').click(function () {
         $('body').toggleClass('gh-head-open');
