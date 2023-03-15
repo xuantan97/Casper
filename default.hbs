@@ -12,6 +12,16 @@
     {{!-- Theme assets - use the {asset} helper to reference styles & scripts,
     this will take care of caching and cache-busting automatically --}}
     <link rel="stylesheet" type="text/css" href="{{asset "built/screen.css"}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset "built/custom.css"}}" />
+    <script>
+        window.darkThrottled = false;
+        if (localStorage.getItem('darkmode-enabled') === "true") {
+            let el = document.getElementsByTagName('html');
+            el[0].classList.remove('light-mode');
+            el[0].classList.add('dark-mode');
+            window.darkThrottled = true;
+        }
+    </script>
 
     {{!-- This tag outputs all your advanced SEO meta, structured data, and other important settings,
     it should always be the last tag before the closing head tag --}}
@@ -32,7 +42,6 @@
                     {{/if}}
                 </a>
                 <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search>{{> "icons/search"}}</button>
-                <button type="button" name="toggle-dark-mode" onclick="darkmodeToggled()" title="Toggle dark/light mode">🌛</button>
                 <button class="gh-burger"></button>
             </div>
 
@@ -46,6 +55,8 @@
             </nav>
 
             <div class="gh-head-actions">
+                <button type="button" class="toggle-mode-button" id="toggle-dark-mode" onclick="darkmodeToggled()" title="Toggle dark/light mode">Dark 🌛</button>
+                <button type="button" class="toggle-mode-button" id="toggle-light-mode" onclick="darkmodeToggled()" title="Toggle dark/light mode">Light 🌞</button>
                 {{#unless @site.members_enabled}}
                     {{^match @custom.navigation_layout "Stacked"}}
                         <button class="gh-search gh-icon-btn" data-ghost-search>{{> "icons/search"}}</button>
@@ -106,13 +117,25 @@
     function darkmodeChanged(state) {
         window.darkThrottled = state;
         localStorage.setItem('darkmode-enabled', state);
-        console.log(window.darkThrottled);
-        $('html').toggleClass("dark-mode light-mode", 1000);
+        $('#toggle-dark-mode').attr('hidden', state);
+        $('#toggle-light-mode').attr('hidden', !state);
+        if (state){
+            $('html').addClass("dark-mode");
+            $('html').removeClass("light-mode");
+        }
+        else {
+            $('html').addClass("light-mode");
+            $('html').removeClass("dark-mode");
+        }
         document.body.classList[state ? 'add' : 'remove']('dark');
     }
 
     if (localStorage.getItem('darkmode-enabled') === "true") {
-        darkmodeChanged(true);
+        $('#toggle-dark-mode').attr('hidden', true);
+        $('#toggle-light-mode').attr('hidden', false);
+    } else {
+        $('#toggle-dark-mode').attr('hidden', false);
+        $('#toggle-light-mode').attr('hidden', true);
     }
     // Mobile Menu Trigger
     $('.gh-burger').click(function () {

@@ -1,0 +1,15 @@
+@import "global.css";
+
+.toggle-mode-button {
+    border: 1px solid var(--ghost-accent-color);
+    padding: .5rem;
+    background: var(--ghost-accent-color);
+    border-radius: 5px;
+    transition: background 200ms ease;
+    color: #eaeaea;
+    width: 80px;
+}
+
+.toggle-mode-button:hover {
+    background: rgba(var(--ghost-accent-color)#333, 0.8);
+}
