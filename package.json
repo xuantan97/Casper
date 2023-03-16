@@ -168,6 +168,22 @@
                 "type": "boolean",
                 "default": true,
                 "group": "post"
+            },
+            "social_facebook_url": {
+                "type": "text",
+                "default": "https://facebook.com/bondgl0"
+            },
+            "social_twitter_url": {
+                "type": "text",
+                "default": "https://twitter.com/blablabbon"
+            },
+            "social_linkedin_url": {
+                "type": "text",
+                "default": "https://www.linkedin.com/in/xuantan97/"
+            },
+            "social_email_url": {
+                "type": "text",
+                "default": "contact@xuantan97.com"
             }
         }
     },
